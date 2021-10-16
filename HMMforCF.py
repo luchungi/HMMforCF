@@ -5,8 +5,8 @@ from datetime import datetime
 # %%
 path = 'D:\\Netflix Dataset\\'
 file = 'combined_data_1.txt'
-nrows = 1000000
-df = pd.read_csv(path + file, sep=',', header=None, names=['user', 'rating'], nrows=nrows)
+nrows = 100
+df = pd.read_csv(path + file, sep=',', header=None, names=['user', 'rating', 'date'], nrows=nrows)
 # %%
 movie_id_index = pd.DataFrame(pd.isnull(df['rating']))
 df_movies = df[df['rating'].isna()]
@@ -20,5 +20,8 @@ df['movie_id'] = None
 
 for i in range(np_movies.shape[0] - 1):
     # df.iloc[np_movies[i, 0]+1: np_movies[i+1, 0]]['movie_id'] = np_movies[i, 1]
-    df.loc[(np_movies[i,0]+1):(np_movies[i+1,0]-1), 3] = np_movies[i, 1]  
+    df.loc[(np_movies[i,0]+1):(np_movies[i+1,0]-1), 'movie_id'] = np_movies[i, 1]
+df.loc[(np_movies[-1,0]+1):, 'movie_id'] = np_movies[-1, 1]
+df = df.dropna()
 # %%
+
